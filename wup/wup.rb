@@ -107,7 +107,7 @@ class Wup
     v=yield(text)
 
     gdbm do |db| 
-      v=to_enc(key, v) 
+      v=to_enc(key, v.strip) 
       db[key]=v if db.key?(key) 
       db.reorganize
     end
