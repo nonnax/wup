@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Id$ nonnax 2021-12-12 19:24:31 +0800
+echo "" | fzf --preview='wgrep {q} | bat -l md --color=always --style=numbers'
