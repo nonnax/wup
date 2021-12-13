@@ -2,8 +2,9 @@
 # Id$ nonnax 2021-12-12 19:16:55 +0800
 require 'gdbm'
 require 'rubytools/string_ext'
+
 key=ARGV.first
-GDBM.open('wup.db'){|db| 
+GDBM.open('wup.db') do |db| 
   db.keys.select{|k| /#{key}/.match(k)}.each do |like_key|
     puts like_key
     puts "-[#{like_key.split(':').first}]".rjust(80, '-')
@@ -13,4 +14,4 @@ GDBM.open('wup.db'){|db|
     puts v
     puts    
   end
-}
+end
