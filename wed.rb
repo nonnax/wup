@@ -7,7 +7,6 @@ key=PIPE_ARGV().dup
 exit if key.nil?
 key.chomp!
 
-
 Wup.new.edit(key) do |text|
   IO.editor(text).chomp
 end
