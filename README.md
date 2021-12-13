@@ -8,15 +8,14 @@
 - wgrep : grep
   - wgrep <q> or 
   - echo <q> | wgrep
+- wgrepz :  fzf query
 - wkeys : list keys
 - wls : list 
   - ex. wls <any>
-- wgrepz :  fzf query
-- wrm : rm 
-  - ex. wrm <key> or 
-  - echo <key> | wrm
 - wcat : cat 
   - ex. wcat <key> or 
   - echo <q> | wview
 - wcatz : fzf view
-
+- wrm : rm 
+  - ex. wrm <key> or 
+  - echo <key> | wrm
