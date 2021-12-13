@@ -8,5 +8,5 @@ exit if key.nil?
 key.chomp!
 
 Wup.new.edit(key) do |text|
-  IO.editor(text).chomp
+  IO.editor(text)
 end
