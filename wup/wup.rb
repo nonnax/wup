@@ -16,16 +16,11 @@ class Wup
     @dbfile='wup.db'
   end
 
-  def self.keys
-    GDBM.open('wup.db'){|db| db.keys}
-  end
-  
+  def self.keys()=GDBM.open('wup.db'){|db| db.keys}
   def timenow()=Time.now.strftime('%H%M%S')
-
   def today()=Time.now.strftime('%Y%m%d')
 
   def get(tag: 'note')
-    
     template=<<~___
     date: #{today}
     tag: #{tag}
@@ -53,7 +48,7 @@ class Wup
       post_body=to_enc(key, post_body)
 
       db_key=[key, @post['date'], timenow].join(':')
-      db[db_key]=post_body
+      db[db_key]=post_body.strip
       @latest_post_key=db_key
     end
   rescue => e
@@ -67,25 +62,14 @@ class Wup
     puts "Not saved #{@latest_post_key}"
   end
 
-  def [](key)
-    gdbm{|db| db[key] if db.key?(key)}
-  end
-
-  def to_h
-    gdbm{|db| db.to_h}
-  end
-
-  def keys
-    gdbm{|db| db.keys}
-  end
-
-  def values_at(*a)
-    gdbm{|db| db.values_at(*a)}
-  end
-  
-  def select(&block)
-    gdbm{|db| db.select(&block) }
-  end
+  def [](key)=gdbm{|db| db[key] if db.key?(key)}
+  def key?(key)=gdbm{|db| db.key?(key)}
+  def to_h()=gdbm{|db| db.to_h}
+  def keys()=gdbm{|db| db.keys}
+  def values_at(*a)=gdbm{|db| db.values_at(*a)}
+  def select(&block)=gdbm{|db| db.select(&block) }
+  def delete(key)=gdbm{|db| db.delete(key) if db.key?(key) }
+  def reorganize()=gdbm{|db| db.reorganize }
   
   def grep(q)
     return if q.empty?
@@ -129,10 +113,7 @@ class Wup
     end
   end
 
-  def gdbm(&block)
-    GDBM.open(@dbfile, &block)
-  end
+  def gdbm(&block)=GDBM.open(@dbfile, &block)
   private :gdbm
   
 end
-
