@@ -50,7 +50,7 @@ class Wup
     gdbm do |db|
       key=@post['tag']
       post_body=@post['post']
-      post_body=to_encode(key, post_body)
+      post_body=to_enc(key, post_body)
 
       db_key=[key, @post['date'], timenow].join(':')
       db[db_key]=post_body
@@ -78,6 +78,14 @@ class Wup
   def keys
     gdbm{|db| db.keys}
   end
+
+  def values_at(*a)
+    gdbm{|db| db.values_at(*a)}
+  end
+  
+  def select(&block)
+    gdbm{|db| db.select(&block) }
+  end
   
   def grep(q)
     return if q.empty?
@@ -85,11 +93,10 @@ class Wup
       db.to_h
         .select do |k, v| 
            /#{q}/.match(v) || 
-           ( k.match(/safe/) && /#{q}/.match( to_decode(k, v) ) ) 
+           ( k.match(/safe/) && /#{q}/.match( to_dec(k, v) ) ) 
         end
         .each do |k, vq|
-          vq = to_decode(k, vq)
-          acc = vq
+          acc = to_dec(k, vq)
                 .split("\n")
                 .select{|l| /#{q}/.match(l) }
           yield(k, acc)
@@ -97,13 +104,13 @@ class Wup
     end
   end
 
-  def to_encode(key, text)
+  def to_enc(key, text)
     text=text.chomp.encode64 if key.match(/^safe/) && !text.base64?
     text
   end
 
-  def to_decode(key, text)
-    text=text.decode64 if key.match(/^safe/) && text.base64?
+  def to_dec(key, text)
+    text=text.decode64 if key.match(/^safe/) && text.base64? || text.chomp.base64?
     text.chomp
   end
   
@@ -112,11 +119,11 @@ class Wup
     gdbm{|db| text=db[key] if db.key?(key)}
     return if text.nil?
 
-    text=to_decode(key, text)
+    text=to_dec(key, text)
     v=yield(text)
 
     gdbm do |db| 
-      v=to_encode(key, v) 
+      v=to_enc(key, v) 
       db[key]=v if db.key?(key) 
       db.reorganize
     end
