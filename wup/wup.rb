@@ -6,6 +6,7 @@ require 'gdbm'
 require 'fzf'
 require 'string_ext'
 require 'pipe_argv'
+require 'fileutils'
 
 class Wup
   attr_accessor :post
@@ -13,7 +14,13 @@ class Wup
 
   def initialize
     @post={}
-    @dbfile='wup.db'
+    @dbfile=expand_path('wup.db')
+  end
+
+  def expand_path(db)
+    dir=File.expand_path('~/.wup')
+    FileUtils.mkdir_p dir unless Dir.exists?(dir)
+    [dir, db].join('/')
   end
 
   def self.keys()=GDBM.open('wup.db'){|db| db.keys}
