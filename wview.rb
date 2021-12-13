@@ -11,6 +11,6 @@ Wup.new.tap do |wup|
   if wup.key?(key)
     puts key
     puts "-[#{key.split(':').first}]".rjust(80, '-')
-    puts wup.to_dec( key, wup[key] ).chomp
+    puts wup.to_dec( key, wup[key] ).strip
   end
 end
