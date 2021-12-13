@@ -1,0 +1,1 @@
+wup is a cli-journal
