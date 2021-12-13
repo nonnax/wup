@@ -63,13 +63,13 @@ class Wup
   end
 
   def [](key)=gdbm{|db| db[key] if db.key?(key)}
-  def key?(key)=gdbm{|db| db.key?(key)}
-  def to_h()=gdbm{|db| db.to_h}
-  def keys()=gdbm{|db| db.keys}
-  def values_at(*a)=gdbm{|db| db.values_at(*a)}
-  def select(&block)=gdbm{|db| db.select(&block) }
   def delete(key)=gdbm{|db| db.delete(key) if db.key?(key) }
+  def key?(key)=gdbm{|db| db.key?(key)}
+  def keys()=gdbm{|db| db.keys}
   def reorganize()=gdbm{|db| db.reorganize }
+  def select(&block)=gdbm{|db| db.select(&block) }
+  def to_h()=gdbm{|db| db.to_h}
+  def values_at(*a)=gdbm{|db| db.values_at(*a)}
   
   def grep(q)
     return if q.empty?
