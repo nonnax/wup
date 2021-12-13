@@ -9,15 +9,12 @@ key=ARGV.first
 
 Wup.new.tap do |wup|
   wup 
-  .to_h
-  .keys
-  .select{|k| /#{key}/.match(k)}
-  .each do |kmatched|
+  .select{|k, v| /#{key}/.match(k)}
+  .each do |kmatched, v|
     puts kmatched
     puts "-[#{kmatched.split(':').first}]".rjust(80, '-')
     
-    v=wup[kmatched]
-    v=wup.to_decode(kmatched, v)
+    v=wup.to_dec(kmatched, v)
     puts v
     puts    
   end  
