@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Id$ nonnax 2021-12-12 19:24:31 +0800
+wkeys | fzf --preview='wview {} | fold -s -w80 | bat -l md --color=always --style=numbers'
