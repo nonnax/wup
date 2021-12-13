@@ -31,7 +31,10 @@ class Wup
     text=yield template
 
     header, body=text.split(/[-]{3,}\n/)
-    post=header.split(/\n/).map{|e| e.split(/:\s*/,2).map(&:strip) }.to_h
+    post=header
+          .split(/\n/)
+          .map{|e| e.split(/:\s*/,2).map(&:strip) }
+          .to_h
     @post=post.merge!('post'=> body)
     @post=nil if body.to_s.strip.empty?
     save()
@@ -76,37 +79,38 @@ class Wup
     return if q.empty?
     gdbm do |db| 
       db.to_h
-        .select{ |k, v| 
-                  /#{q}/.match(v) || ( k.match(/safe/) && /#{q}/.match( to_decode(k, v) ) ) 
-          }
+        .select do |k, v| 
+           /#{q}/.match(v) || 
+           ( k.match(/safe/) && /#{q}/.match( to_decode(k, v) ) ) 
+        end
         .each do |k, vq|
           vq = to_decode(k, vq)
-          val = vq
+          acc = vq
                 .split("\n")
                 .select{|l| /#{q}/.match(l) }
-          yield(k, val)
+          yield(k, acc)
         end
     end
   end
 
   def to_encode(key, text)
-    text=text.chomp.encode64 if key.match(/^safe/) && !text.chomp.base64?
+    text=text.chomp.encode64 if key.match(/^safe/) && !text.base64?
     text
   end
 
   def to_decode(key, text)
-    text=text.decode64 if key.match(/^safe/) #&& text.chomp.base64?
+    text=text.decode64 if key.match(/^safe/) && text.base64?
     text.chomp
   end
   
   def edit(key)
     text=nil
-    gdbm{|db| text=db[key] if db.key?(key) }
+    gdbm{|db| text=db[key] if db.key?(key)}
     return if text.nil?
 
     text=to_decode(key, text)
+    v=yield(text)
 
-    v=yield( text)
     gdbm do |db| 
       v=to_encode(key, v) 
       db[key]=v if db.key?(key) 
@@ -115,7 +119,7 @@ class Wup
   end
 
   def gdbm(&block)
-      GDBM.open(@dbfile, &block)
+    GDBM.open(@dbfile, &block)
   end
   private :gdbm
   
