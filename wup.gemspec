@@ -1,14 +1,14 @@
 files=%w[README.md
 wup/wup.rb
+bin/win
 bin/wed
 bin/wgrep
-bin/win
+bin/wgrepz
 bin/wkeys
 bin/wls
-bin/wq
+bin/wcat
+bin/wcatz
 bin/wrm
-bin/wview
-bin/wviewz
 wup.gemspec
 ]
 
@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.authors = ["xxanon"]
   s.email = "ironald@gmail.com"
   s.files = files
-  s.executables += %w[wed wgrep win wkeys wls wq wrm wview wviewz]
+  s.executables += %w[win wed wgrep wgrepz wkeys wls wcat wcatz wrm]
   s.homepage = "https://github.com/nonnax/wup.git"
   s.license = "GPL-3.0"
 end
