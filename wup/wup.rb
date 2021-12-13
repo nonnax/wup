@@ -13,7 +13,7 @@ class Wup
 
   def initialize
     @post={}
-    @dbfile='wdb.db'
+    @dbfile='wup.db'
   end
 
   def timenow()=Time.now.strftime('%H%M%S')

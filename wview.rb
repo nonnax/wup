@@ -9,7 +9,7 @@ key=PIPE_ARGV().dup
 exit if key.nil?
 key.chomp! if key
 
-GDBM.open('wdb.db') do |db| 
+GDBM.open('wup.db') do |db| 
   if db.key?(key)
     puts key
     puts "-[#{key.split(':').first}]".rjust(80, '-')

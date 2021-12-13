@@ -8,7 +8,7 @@ key=PIPE_ARGV().dup
 exit unless key
 key.chomp!
 
-GDBM.open('wdb.db') do |db|
+GDBM.open('wup.db') do |db|
    p db.delete(key) if db.key?(key) 
    db.reorganize
 end
