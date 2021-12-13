@@ -16,6 +16,10 @@ class Wup
     @dbfile='wup.db'
   end
 
+  def self.keys
+    GDBM.open('wup.db'){|db| db.keys}
+  end
+  
   def timenow()=Time.now.strftime('%H%M%S')
 
   def today()=Time.now.strftime('%Y%m%d')
