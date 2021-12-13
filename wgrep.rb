@@ -8,7 +8,7 @@ q=PIPE_ARGV().dup
 exit if q.nil?
 q.chomp!
 
-Wup.new.grep(q){|k, varr|
+Wup.new.grep(q) do |k, varr|
   v=varr
     .map{|l| l.gsub(q, q.magenta) }
     .join("\n")
@@ -17,4 +17,4 @@ Wup.new.grep(q){|k, varr|
   puts "-[#{k.split(':').first}]".rjust(80, '-')
   puts v
   puts
-}
+end
