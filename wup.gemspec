@@ -1,6 +1,6 @@
 files=%w[README.md
 wup/wup.rb
-bin/win
+bin/wup
 bin/wed
 bin/wgrep
 bin/wgrepz
