@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.authors = ["xxanon"]
   s.email = "ironald@gmail.com"
   s.files = files
-  s.executables += %w[win wed wgrep wgrepz wkeys wls wcat wcatz wrm]
+  s.executables += %w[wup wed wgrep wgrepz wkeys wls wcat wcatz wrm]
   s.homepage = "https://github.com/nonnax/wup.git"
   s.license = "GPL-3.0"
 end
