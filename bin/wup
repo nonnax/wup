@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# Id$ nonnax 2021-12-13 14:45:28 +0800
+require_relative '../wup/wup'
+require 'optparse'
+
+opts={}
+OptionParser.new do |opt|
+  opt.on('-h', '--help')
+end.parse!(into: opts)
+
+case 
+when opts[:help]
+  dir=File.dirname(File.expand_path(__FILE__))  
+  path=[dir,'../README.md'].join('/')
+  puts File.read(path)
+else
+  Wup.new.tap do |wup|
+    wup.get do |t|
+      # decouples the editor
+      # other methods are allowed to update it. 
+      # i.e. from a stream source to update to the db
+      IO.editor(t)
+    end
+    puts wup.latest_post
+  end
+end
