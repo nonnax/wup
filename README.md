@@ -1,7 +1,7 @@
 #wup is a cli-journal
 
 ##commands
-- win : input post
+- wup : input post
 - wed : edit
   - ex. wed <key> or 
   - echo <key> | wed
