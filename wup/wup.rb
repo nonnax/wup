@@ -25,8 +25,8 @@ class Wup
     @dbfile=@config['db']
   end
 
-  def backup(when: 'before')
-    FileUtil.cp @dbfile, @dbfile+"#{when}.bak"
+  def backup(tag: 'before')
+    Thread.new{ FileUtils.cp @dbfile, @dbfile+".#{tag}.bak" }.join
   end
 
   def expand_path(db)
@@ -59,7 +59,7 @@ class Wup
 
   def save
     raise if @post.nil?
-    backup(when: 'before')
+    backup(tag: 'before')
     gdbm do |db|
       key=@post['tag']
       post_body=@post['post']
@@ -72,7 +72,7 @@ class Wup
   rescue => e
     puts "Error: Invalid Post\n#{e}"
   ensure
-    backup(when: 'after')
+    backup(tag: 'after')
   end
   private :save
   
