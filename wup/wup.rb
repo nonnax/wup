@@ -7,14 +7,26 @@ require 'fzf'
 require 'string_ext'
 require 'pipe_argv'
 require 'fileutils'
+require 'yaml'
 
 class Wup
   attr_accessor :post
   attr :latest_post_key
+  CONFIG='config.yaml'
+  DBFILE='wup.db'
 
   def initialize
+    db_file=expand_path(DBFILE)
+    @dbdir=File.dirname(db_file)
+    conf_path=[@dbdir, CONFIG].join('/')
+    @config={'db'=> db_file}
+    File.exists?(conf_path) ? @config=YAML.load(File.read(conf_path)) : File.write( conf_path, @config.to_yaml)
     @post={}
-    @dbfile=expand_path('wup.db')
+    @dbfile=@config['db']
+  end
+
+  def backup(when: 'before')
+    FileUtil.cp @dbfile, @dbfile+"#{when}.bak"
   end
 
   def expand_path(db)
@@ -23,7 +35,6 @@ class Wup
     [dir, db].join('/')
   end
 
-  def self.keys()=GDBM.open('wup.db'){|db| db.keys}
   def timenow()=Time.now.strftime('%H%M%S')
   def today()=Time.now.strftime('%Y%m%d')
 
@@ -48,7 +59,7 @@ class Wup
 
   def save
     raise if @post.nil?
-    
+    backup(when: 'before')
     gdbm do |db|
       key=@post['tag']
       post_body=@post['post']
@@ -60,6 +71,8 @@ class Wup
     end
   rescue => e
     puts "Error: Invalid Post\n#{e}"
+  ensure
+    backup(when: 'after')
   end
   private :save
   
