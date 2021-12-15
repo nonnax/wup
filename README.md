@@ -14,7 +14,7 @@
   - ex. wls <any>
 - wcat : cat 
   - ex. wcat <key> or 
-  - echo <q> | wview
+  - echo <key> | wview
 - wcatz : fzf view
 - wrm : rm 
   - ex. wrm <key> or 
