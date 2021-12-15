@@ -95,16 +95,17 @@ class Wup
   
   def grep(q)
     return if q.empty?
+    query=/#{q}/i
     gdbm do |db| 
       db.to_h
         .select do |k, v| 
-           /#{q}/.match(v) || 
-           ( k.match(/safe/) && /#{q}/.match( to_dec(k, v) ) ) 
+           query.match(v) || 
+           ( k.match(/safe/) && query.match( to_dec(k, v) ) ) 
         end
         .each do |k, vq|
           acc = to_dec(k, vq)
                 .split("\n")
-                .select{|l| /#{q}/.match(l) }
+                .select{|l| query.match(l) }
           yield(k, acc)
         end
     end
