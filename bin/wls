@@ -1,8 +1,22 @@
 #!/usr/bin/env ruby
 # Id$ nonnax 2021-12-12 19:16:55 +0800
 require_relative '../wup/wup'
+require 'optparse'
 
 key=ARGV.first
+
+opts={}
+OptionParser.new do |opt|
+  opt.on '-i[INDEX]', '--index=[INDEX]', Array
+end.parse!(into: opts)
+
+numlines=-1
+
+case 
+when opts[:index].first
+  numlines=opts[:index].first.to_i
+else
+end
 
 Wup.new.tap do |wup|
   wup 
@@ -12,7 +26,9 @@ Wup.new.tap do |wup|
     puts "-[#{kmatched.split(':').first}]".rjust(80, '-')
     
     v=wup.to_dec(kmatched, v)
-    puts v
+    v.split(/\n/)[0..numlines].each do |l|
+      puts l
+    end
     puts    
   end  
 end
