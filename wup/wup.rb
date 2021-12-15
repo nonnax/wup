@@ -40,14 +40,17 @@ class Wup
   def timenow()=Time.now.to_i.to_base32
   def today()=Time.now.strftime('%Y%m%d')
 
-  def get(tag: 'note')
-    template=<<~___
-    date: #{today}
+  def template(date, tag, post="")
+    <<~___
+    date: #{date}
     tag: #{tag}
     ---
+    #{post}
     ___
-
-    text=yield template
+  end
+  
+  def get(tag: 'note')
+    text=yield template(today, tag)
 
     header, body=text.split(/[-]{3,}\n/)
     post=header
