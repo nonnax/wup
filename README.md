@@ -2,6 +2,8 @@
 
 ##commands
 - wup : input post
+- wpull : pull a post
+- wput : put post, (use: template)
 - wed : edit
   - ex. wed <key> or 
   - echo <key> | wed
@@ -19,3 +21,9 @@
 - wrm : rm 
   - ex. wrm <key> or 
   - echo <key> | wrm
+
+template format: 
+date: <date>
+tag: <tag>
+---
+<post>
