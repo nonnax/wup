@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# Id$ nonnax 2021-12-12 19:16:55 +0800
+require_relative '../wup/wup'
+
+key=PIPE_ARGV().dup
+
+exit if key.nil?
+key.chomp! if key
+
+Wup.new.tap do |wup|
+  if wup.key?(key)
+    tag, date, = key.split(':') 
+    post = wup.to_dec(key, wup[key] ).strip
+    puts wup.template(date, tag, post)
+    puts 
+  end
+end
