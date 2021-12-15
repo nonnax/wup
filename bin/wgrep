@@ -10,7 +10,7 @@ q.chomp!
 
 Wup.new.grep(q) do |k, varr|
   v=varr
-    .map{|l| l.gsub(q, q.magenta) }
+    .map{|l| l.gsub(/#{q}/i){|m| m.magenta} }
     .join("\n")
 
   puts k
