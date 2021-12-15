@@ -5,37 +5,39 @@ require 'editor'
 require 'gdbm'
 require 'fzf'
 require 'string_ext'
+require 'numeric_ext'
 require 'pipe_argv'
 require 'fileutils'
 require 'yaml'
 
+WUP_ROOT=File.expand_path('~/.wup')
+
+class String
+  def to_wup_path
+    FileUtils.mkdir_p(WUP_ROOT) unless Dir.exists?(WUP_ROOT)
+    [WUP_ROOT, File.basename(self)].join('/')
+  end
+end
+
 class Wup
   attr_accessor :post
   attr :latest_post_key
-  CONFIG='config.yaml'
-  DBFILE='wup.db'
+
+  CONFIG='config.yaml'.to_wup_path
+  DBFILE='wup.db'.to_wup_path
 
   def initialize
-    db_file=expand_path(DBFILE)
-    @dbdir=File.dirname(db_file)
-    conf_path=[@dbdir, CONFIG].join('/')
-    @config={'db'=> db_file}
-    File.exists?(conf_path) ? @config=YAML.load(File.read(conf_path)) : File.write( conf_path, @config.to_yaml)
+    @config={'db'=> DBFILE }
+    File.exists?(CONFIG) ? @config=YAML.load(File.read(CONFIG)) : File.write(CONFIG, @config.to_yaml)
     @post={}
-    @dbfile=@config['db']
+    @dbfile=@config['db'].to_wup_path
   end
 
   def backup(tag: 'before')
-    Thread.new{ FileUtils.cp @dbfile, @dbfile+".#{tag}.bak" }.join
+    Thread.new{ FileUtils.cp @dbfile, @dbfile+".#{tag}.bak" }.join if File.exists?(@dbfile)
   end
 
-  def expand_path(db)
-    dir=File.expand_path('~/.wup')
-    FileUtils.mkdir_p dir unless Dir.exists?(dir)
-    [dir, db].join('/')
-  end
-
-  def timenow()=Time.now.strftime('%H%M%S')
+  def timenow()=Time.now.to_i.to_base32
   def today()=Time.now.strftime('%Y%m%d')
 
   def get(tag: 'note')
