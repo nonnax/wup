@@ -7,14 +7,16 @@ key=ARGV.first
 
 opts={}
 OptionParser.new do |opt|
-  opt.on '-i[INDEX]', '--index=[INDEX]', Array
+  opt.banner='wls <arg> | [option] <arg>'
+  opt.on '-n[LINES]', '--num=[LINES]', 'Number of lines to show'
 end.parse!(into: opts)
 
 numlines=-1
 
 case 
-when opts[:index]
-  numlines=opts[:index].first.to_i
+when opts[:num]
+  numlines=opts[:num].to_i
+  key=ARGV.last
 else
 end
 
