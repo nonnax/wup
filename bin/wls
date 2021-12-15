@@ -8,10 +8,10 @@ key=ARGV.first
 opts={}
 OptionParser.new do |opt|
   opt.banner='wls <arg> | [option] <arg>'
-  opt.on '-n[LINES]', '--num=[LINES]', 'Number of lines to show'
+  opt.on '-n[NUM]', '--num=[NUM]', 'prints the first NUM lines. default=10'
 end.parse!(into: opts)
 
-numlines=-1
+numlines=10
 
 case 
 when opts[:num]
