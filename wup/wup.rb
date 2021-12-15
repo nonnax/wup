@@ -67,11 +67,11 @@ class Wup
     backup(tag: 'before')
     gdbm do |db|
       key=@post['tag']
-      post_body=@post['post']
+      post_body=@post['post'].strip
       post_body=to_enc(key, post_body)
 
       db_key=[key, @post['date'], timenow].join(':')
-      db[db_key]=post_body.strip
+      db[db_key]=post_body
       @latest_post_key=db_key
     end
   rescue => e
