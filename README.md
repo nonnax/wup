@@ -23,7 +23,7 @@
   - echo <key> | wrm
 
 template format: 
-date: <date>
-tag: <tag>
+date: [date]
+tag: [tag]
 ---
-<post>
+[post]
