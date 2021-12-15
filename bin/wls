@@ -13,7 +13,7 @@ end.parse!(into: opts)
 numlines=-1
 
 case 
-when opts[:index].first
+when opts[:index]
   numlines=opts[:index].first.to_i
 else
 end
