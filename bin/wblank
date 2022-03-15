@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# Id$ nonnax 2021-12-12 19:35:05 +0800
+require_relative '../wup/wup'
+
+
+Wup.new.tap{|doc| 
+  puts doc.template doc.today, 'note'
+}
