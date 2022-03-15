@@ -6,7 +6,7 @@ require 'gdbm'
 require 'fzf'
 require 'string_ext'
 require 'numeric_ext'
-# require 'pipe_argv'
+require 'pipe_argv'
 require 'fileutils'
 require 'yaml'
 
