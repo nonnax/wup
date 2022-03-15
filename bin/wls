@@ -22,7 +22,7 @@ end
 
 Wup.new.tap do |wup|
   wup 
-  .select{|k, v| /#{key}/.match(k)}
+  .select{|k, v| /#{key}/.match?(k)}
   .each do |kmatched, v|
     puts kmatched
     puts "-[#{kmatched.split(':').first}]".rjust(80, '-')

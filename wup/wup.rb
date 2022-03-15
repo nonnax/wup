@@ -102,25 +102,25 @@ class Wup
     gdbm do |db| 
       db.to_h
         .select do |k, v| 
-           query.match(v) || 
-           ( k.match(/safe/) && query.match( to_dec(k, v) ) ) 
+           query.match?(v) || 
+           ( k.match?(/safe/) && query.match?( to_dec(k, v) ) ) 
         end
         .each do |k, vq|
           acc = to_dec(k, vq)
                 .split("\n")
-                .select{|l| query.match(l) }
+                .select{|l| query.match?(l) }
           yield(k, acc)
         end
     end
   end
 
   def to_enc(key, text)
-    text=text.chomp.encode64 if key.match(/^safe/) && !text.base64?
+    text=text.chomp.encode64 if key.match?(/^safe/) && !text.base64?
     text
   end
 
   def to_dec(key, text)
-    text=text.decode64 if key.match(/^safe/) && text.base64? || text.chomp.base64?
+    text=text.decode64 if key.match?(/^safe/) && text.base64? || text.chomp.base64?
     text.chomp
   end
   
