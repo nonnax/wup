@@ -2,7 +2,7 @@
 # Id$ nonnax 2021-12-12 22:01:16 +0800
 require_relative '../wup/wup'
 
-key=PIPE_ARGV().dup
+key=ARGF.read
 
 exit unless key
 key.chomp!

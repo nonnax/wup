@@ -3,7 +3,7 @@
 require_relative '../wup/wup'
 require 'ansi_color'
 
-q=PIPE_ARGV().dup
+q=ARGF.read
 
 exit if q.nil?
 q.chomp!
