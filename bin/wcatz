@@ -2,3 +2,5 @@
 # Id$ nonnax 2021-12-12 19:24:31 +0800
 cmd="wkeys | fzf --preview='wcat {} | fold -s -w80 | bat -l md --color=always --style=numbers'"
 IO.popen(cmd, &:read)
+  .then{ |key|  puts IO.popen(['wcat', key], &:read) }
+

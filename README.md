@@ -1,29 +1,41 @@
 # wup is a cli-journal
+![image](https://img.shields.io/badge/contact-nonnax-blue)
 
 ## commands
 
-## wup : input post
+## wup : new post
 
-## wpull : pull a post
+## wpull : pull post
 
-## wput : put post, (use: template)
-
-~~~
-  ex. wblank | $EDITOR | wput
-~~~
-
-## wed : edit
+## wput : post via template (headless)
 
 ~~~
-  ex. wed <key> or 
-  echo <key> | wed
+  usage:
+  wblank | $EDITOR | wput
+
+  or 
+  
+  pipe using template below:
+    date: <date>
+    tag: <tag>
+    ---
+    <post>
 ~~~
 
-## wgrep : grep
+## wed : edit by key
 
 ~~~
-  wgrep <q> or 
-  echo <q> | wgrep
+  usage:
+    wed <key> or 
+    echo <key> | wed
+~~~
+
+## wgrep : grep contents
+
+~~~
+  usage:
+    wgrep <q> or 
+    echo <q> | wgrep
 
 ~~~
 
@@ -31,17 +43,19 @@
 
 ## wkeys : list keys
 
-## wls : list 
+## wls : list <key|any>
 
 ~~~
-  ex. wls <any>
+  usage:
+    wls <any>
 
 ~~~
 
 ## wcat : cat 
 ~~~
-  ex. wcat <key> or 
-  echo <key> | wview
+  usage:
+    wcat <key> or 
+    echo <key> | wview
 
 ~~~
 ## wcatz : fzf view
@@ -49,20 +63,14 @@
 ## wrm : rm 
 
 ~~~
-  ex. wrm <key> or 
-  echo <key> | wrm
+  usage:
+    wrm <key> or 
+    echo <key> | wrm
 
 ~~~
 
 ## wblank 
-
-  ex. wblank | $EDITOR | wput
-
-## template format 
-
 ~~~
-    date: <date>
-    tag: <tag>
-    ---
-    <post>
+  usage:
+    wblank | $EDITOR | wput
 ~~~
