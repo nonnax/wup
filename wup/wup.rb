@@ -9,12 +9,14 @@ require 'numeric_ext'
 require 'pipe_argv'
 require 'fileutils'
 require 'yaml'
+using StringExt
+using NumericExt
 
 WUP_ROOT=File.expand_path('~/.wup')
 
 class String
   def to_wup_path
-    FileUtils.mkdir_p(WUP_ROOT) unless Dir.exists?(WUP_ROOT)
+    FileUtils.mkdir_p(WUP_ROOT) unless Dir.exist?(WUP_ROOT)
     [WUP_ROOT, File.basename(self)].join('/')
   end
 end
@@ -28,13 +30,13 @@ class Wup
 
   def initialize
     @config={'db'=> DBFILE }
-    File.exists?(CONFIG) ? @config=YAML.load(File.read(CONFIG)) : File.write(CONFIG, @config.to_yaml)
+    File.exist?(CONFIG) ? @config=YAML.load(File.read(CONFIG)) : File.write(CONFIG, @config.to_yaml)
     @post={}
     @dbfile=@config['db'].to_wup_path
   end
 
   def backup(tag: 'before')
-    Thread.new{ FileUtils.cp @dbfile, @dbfile+".#{tag}.bak" }.join if File.exists?(@dbfile)
+    Thread.new{ FileUtils.cp @dbfile, @dbfile+".#{tag}.bak" }.join if File.exist?(@dbfile)
   end
 
   def timenow()=Time.now.to_i.to_base32
@@ -48,7 +50,7 @@ class Wup
     #{post}
     ___
   end
-  
+
   def get(tag: 'note')
     text=yield template(today, tag)
 
@@ -80,7 +82,7 @@ class Wup
     backup(tag: 'after')
   end
   private :save
-  
+
   def latest_post
     self[@latest_post_key]
   rescue
@@ -95,15 +97,15 @@ class Wup
   def select(&block)=gdbm{|db| db.select(&block) }
   def to_h()=gdbm{|db| db.to_h}
   def values_at(*a)=gdbm{|db| db.values_at(*a)}
-  
+
   def grep(q)
     return if q.empty?
     query=/#{q}/i
-    gdbm do |db| 
+    gdbm do |db|
       db.to_h
-        .select do |k, v| 
-           query.match?(v) || 
-           ( k.match?(/safe/) && query.match?( to_dec(k, v) ) ) 
+        .select do |k, v|
+           query.match?(v) ||
+           ( k.match?(/safe/) && query.match?( to_dec(k, v) ) )
         end
         .each do |k, vq|
           acc = to_dec(k, vq)
@@ -123,7 +125,7 @@ class Wup
     text=text.decode64 if key.match?(/^safe/) && text.base64? || text.chomp.base64?
     text.chomp
   end
-  
+
   def edit(key)
     text=nil
     gdbm{|db| text=db[key] if db.key?(key)}
@@ -132,14 +134,14 @@ class Wup
     text=to_dec(key, text)
     v=yield(text)
 
-    gdbm do |db| 
-      v=to_enc(key, v.strip) 
-      db[key]=v if db.key?(key) 
+    gdbm do |db|
+      v=to_enc(key, v.strip)
+      db[key]=v if db.key?(key)
       db.reorganize
     end
   end
 
   def gdbm(&block)=GDBM.open(@dbfile, &block)
   private :gdbm
-  
+
 end

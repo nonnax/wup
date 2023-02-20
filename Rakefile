@@ -1,4 +1,5 @@
-#!/usr/bin/env ruby
+
+
 task default: %w[build]
 
 desc "Bundle install dependencies"
@@ -7,11 +8,11 @@ task :bundle do
 end
 
 desc "Build the wup.gem file"
-task build: %w[bundle] do
+task :build do
   sh "gem build wup.gemspec"
 end
 
-desc "install wup-0.0.1.gem"
+desc "install wup-x.x.x.gem"
 task install: %w[build] do
-  sh "sudo gem install wup-0.0.1.gem"
+  sh "gem install $(ls wup-*.gem)"
 end
